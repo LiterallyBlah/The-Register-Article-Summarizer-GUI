@@ -6,3 +6,7 @@ The is an alternate version of https://github.com/LiterallyBlah/The-Register-Art
 2. Download this repo: `git clone https://github.com/LiterallyBlah/The-Register-Article-Summarizer-GUI/`
 3. within the same directory as the repo, run: `python3 -m pip install .`
 4. Run the GUI: `news-summarizer`
+
+# Example
+
+![image](https://user-images.githubusercontent.com/22526586/225254374-9cbc0ff1-4afc-41a3-86cc-faea650de949.png)
