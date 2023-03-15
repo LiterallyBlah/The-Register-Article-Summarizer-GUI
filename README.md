@@ -9,7 +9,8 @@ You can create your OpenAI API key here: https://openai.com/blog/openai-api
 
 
 # Installation
-1. Install Python3 (version 7+)
+There is no GUI for the installation, so you'll have to use the command line/terminal.
+1. Install Python3 & Git
 2. Download this repo: `git clone https://github.com/LiterallyBlah/The-Register-Article-Summarizer-GUI/`
 3. within the same directory as the repo, run: `python3 -m pip install .`
 4. Run the GUI: `news-summarizer`
