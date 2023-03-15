@@ -14,7 +14,8 @@ setup(
     'requests',
     'beautifulsoup4',
     'openai',
-    'ttkthemes'
+    'ttkthemes',
+    'configparser'
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
