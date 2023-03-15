@@ -3,7 +3,7 @@ The is an alternate version of https://github.com/LiterallyBlah/The-Register-Art
 
 # Configure API
 
-Edit the API key in config.ini.
+Submit your API Key at the bottom of the GUI window. You only need to do this once after install.
 
 You can create your OpenAI API key here: https://openai.com/blog/openai-api
 
