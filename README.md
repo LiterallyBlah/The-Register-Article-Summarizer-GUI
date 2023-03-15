@@ -17,7 +17,7 @@ There is no GUI for the installation, so you'll have to use the command line/ter
 
 # Example
 
-![image](https://user-images.githubusercontent.com/22526586/225254374-9cbc0ff1-4afc-41a3-86cc-faea650de949.png)
+![image](https://user-images.githubusercontent.com/22526586/225286616-9586b3d6-3f74-46c1-a4d6-00d3ba341d3f.png)
 
 # Roadmap
 Working on a simply way to run a .exe file to make this simple for non-technical people on Windows. 
