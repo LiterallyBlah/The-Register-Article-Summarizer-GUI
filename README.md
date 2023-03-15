@@ -17,3 +17,6 @@ You can create your OpenAI API key here: https://openai.com/blog/openai-api
 # Example
 
 ![image](https://user-images.githubusercontent.com/22526586/225254374-9cbc0ff1-4afc-41a3-86cc-faea650de949.png)
+
+# Roadmap
+Working on a simply way to run a .exe file to make this simple for non-technical people on Windows. 
