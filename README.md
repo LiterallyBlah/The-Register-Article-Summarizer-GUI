@@ -1,6 +1,13 @@
 # The-Register-Article-Summarizer-GUI
 The is an alternate version of https://github.com/LiterallyBlah/The-Register-Article-Summarizer but with a pretty GUI. You're able to list articles by 'Today', 'Last Week', and 'Last Month'. You're also able to filter the articles by tags. And finally, you can select multiple articles to summarise at a time.
 
+# Configure API
+
+Go into: news_summarizer/news_summarizer.py and edit line 14 (openai.api_key = "<CHANGE_ME>"). Insert your OpenAI API key.
+
+You can create your OpenAI API key here: https://openai.com/blog/openai-api
+
+
 # Installation
 1. Install Python3 (version 7+)
 2. Download this repo: `git clone https://github.com/LiterallyBlah/The-Register-Article-Summarizer-GUI/`
