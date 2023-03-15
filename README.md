@@ -3,7 +3,7 @@ The is an alternate version of https://github.com/LiterallyBlah/The-Register-Art
 
 # Configure API
 
-Go into: news_summarizer/news_summarizer.py and edit line 14 (openai.api_key = "<CHANGE_ME>"). Insert your OpenAI API key.
+Edit the API key in config.ini.
 
 You can create your OpenAI API key here: https://openai.com/blog/openai-api
 
