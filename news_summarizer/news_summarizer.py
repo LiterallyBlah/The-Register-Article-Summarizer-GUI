@@ -14,11 +14,9 @@ config.read('config.ini')
 api_key = config.get('openai', 'api_key')
 
 class NewsSummarizer:
-    def __init__(self):
-        # Configure OpenAI API key
-        openai.api_key = api_key
-        
-        # Setup base URL and headers
+    def __init__(self, api_key=None):
+        if api_key is not None:
+            openai.api_key = api_key
         self.base_url = "https://www.theregister.com/Archive/"
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
 
@@ -67,6 +65,8 @@ class NewsSummarizerGUI:
         self.root.title("News Article Summarizer")
         self.root.geometry("700x800")
         self.create_widgets()
+        self.filtered_articles = []  # Add this line
+
 
     def create_widgets(self):
         # Add font
@@ -108,10 +108,21 @@ class NewsSummarizerGUI:
         self.summary_text = tk.Text(self.root, wrap=tk.WORD, width=100, height=20, font=("Times New Roman", 12))
         self.summary_text.grid(column=0, row=5, columnspan=3, padx=10, pady=10)
 
+        self.api_key_label = ttk.Label(self.root, text="Update API Key:")
+        self.api_key_label.grid(column=0, row=6, sticky=tk.W, padx=10, pady=10)
+
+        self.api_key_entry = ttk.Entry(self.root, width=50)
+        self.api_key_entry.grid(column=1, row=6, padx=10, pady=10)
+
+        self.update_api_key_button = ttk.Button(self.root, text="Update API Key", command=self.update_api_key)
+        self.update_api_key_button.grid(column=2, row=6, padx=10, pady=10)
+
+
     def fetch_articles(self):
         time_period = self.time_period_var.get()
         articles = self.summarizer.fetch_articles(time_period)
         self.articles = articles
+        self.filtered_articles = articles  # Add this line
         self.articles_listbox.delete(0, tk.END)
 
         # Extract all unique tags and update the tag filter dropdown
@@ -122,6 +133,7 @@ class NewsSummarizerGUI:
         for article in articles:
             title = article.find("h4").get_text()
             self.articles_listbox.insert(tk.END, title)
+
 
     def filter_articles(self, event=None):
         selected_tag = self.tag_filter_var.get()
@@ -140,8 +152,11 @@ class NewsSummarizerGUI:
         selected_indices = self.articles_listbox.curselection()
         summaries = []
 
+        if not hasattr(self, "filtered_articles"):
+            return
+
         for index in selected_indices:
-            selected_article = self.filtered_articles[index]  # Use self.filtered_articles instead of self.articles
+            selected_article = self.filtered_articles[index]
             link = "https://www.theregister.com" + selected_article.find("a")["href"]
             title, article_text = self.summarizer.fetch_article_text(link)
             summary = self.summarizer.summarize_text(article_text)
@@ -151,13 +166,25 @@ class NewsSummarizerGUI:
         self.summary_text.insert(tk.END, "\n\n".join(summaries))
 
 
+
+    def update_api_key(self):
+        new_api_key = self.api_key_entry.get()
+        config.set('openai', 'api_key', new_api_key)
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+        self.summarizer = NewsSummarizer(new_api_key)
+        self.api_key_entry.delete(0, tk.END)
+
+
     def run(self):
         self.root.mainloop()
 
+
 def main():
-    news_summarizer = NewsSummarizer()
+    news_summarizer = NewsSummarizer(api_key)
     gui = NewsSummarizerGUI(news_summarizer)
     gui.run()
+
 
 if __name__ == "__main__":
     main()
