@@ -7,11 +7,16 @@ from tkinter import ttk
 import sys
 from ttkthemes import ThemedTk, ThemedStyle
 from tkinter import font
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+api_key = config.get('openai', 'api_key')
 
 class NewsSummarizer:
     def __init__(self):
         # Configure OpenAI API key
-        openai.api_key = "<CHANGE_ME>"
+        openai.api_key = api_key
         
         # Setup base URL and headers
         self.base_url = "https://www.theregister.com/Archive/"
@@ -121,6 +126,7 @@ class NewsSummarizerGUI:
     def filter_articles(self, event=None):
         selected_tag = self.tag_filter_var.get()
         self.articles_listbox.delete(0, tk.END)
+        self.filtered_articles = []
 
         for article in self.articles:
             title = article.find("h4").get_text()
@@ -128,13 +134,14 @@ class NewsSummarizerGUI:
 
             if selected_tag == "All" or selected_tag == tag:
                 self.articles_listbox.insert(tk.END, title)
+                self.filtered_articles.append(article)
 
     def summarize_article(self):
         selected_indices = self.articles_listbox.curselection()
         summaries = []
 
         for index in selected_indices:
-            selected_article = self.articles[index]
+            selected_article = self.filtered_articles[index]  # Use self.filtered_articles instead of self.articles
             link = "https://www.theregister.com" + selected_article.find("a")["href"]
             title, article_text = self.summarizer.fetch_article_text(link)
             summary = self.summarizer.summarize_text(article_text)
@@ -142,6 +149,7 @@ class NewsSummarizerGUI:
 
         self.summary_text.delete(1.0, tk.END)
         self.summary_text.insert(tk.END, "\n\n".join(summaries))
+
 
     def run(self):
         self.root.mainloop()
