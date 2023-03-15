@@ -11,7 +11,7 @@ from tkinter import font
 class NewsSummarizer:
     def __init__(self):
         # Configure OpenAI API key
-        openai.api_key = "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"
+        openai.api_key = "<CHANGE_ME>"
         
         # Setup base URL and headers
         self.base_url = "https://www.theregister.com/Archive/"
