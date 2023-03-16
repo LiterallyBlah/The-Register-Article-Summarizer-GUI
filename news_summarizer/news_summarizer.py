@@ -67,7 +67,6 @@ class NewsSummarizerGUI:
         self.create_widgets()
         self.filtered_articles = []  # Add this line
 
-
     def create_widgets(self):
         # Add font
         style = ttk.Style(self.root)
@@ -117,6 +116,11 @@ class NewsSummarizerGUI:
         self.update_api_key_button = ttk.Button(self.root, text="Update API Key", command=self.update_api_key)
         self.update_api_key_button.grid(column=2, row=6, padx=10, pady=10)
 
+        self.create_blog_post_button = ttk.Button(self.root, text="Create Blog Post", command=self.create_blog_post)
+        self.create_blog_post_button.grid(column=1, row=3, padx=10, pady=10)
+
+        self.create_social_media_post_button = ttk.Button(self.root, text="Create Social Media Post", command=self.create_social_media_post)
+        self.create_social_media_post_button.grid(column=2, row=3, padx=10, pady=10)
 
     def fetch_articles(self):
         time_period = self.time_period_var.get()
@@ -133,7 +137,6 @@ class NewsSummarizerGUI:
         for article in articles:
             title = article.find("h4").get_text()
             self.articles_listbox.insert(tk.END, title)
-
 
     def filter_articles(self, event=None):
         selected_tag = self.tag_filter_var.get()
@@ -165,8 +168,6 @@ class NewsSummarizerGUI:
         self.summary_text.delete(1.0, tk.END)
         self.summary_text.insert(tk.END, "\n\n".join(summaries))
 
-
-
     def update_api_key(self):
         new_api_key = self.api_key_entry.get()
         config.set('openai', 'api_key', new_api_key)
@@ -175,6 +176,63 @@ class NewsSummarizerGUI:
         self.summarizer = NewsSummarizer(new_api_key)
         self.api_key_entry.delete(0, tk.END)
 
+    def create_blog_post(self):
+        selected_indices = self.articles_listbox.curselection()
+        summaries = []
+
+        if not hasattr(self, "filtered_articles"):
+            return
+
+        for index in selected_indices:
+            selected_article = self.filtered_articles[index]
+            link = "https://www.theregister.com" + selected_article.find("a")["href"]
+            title, article_text = self.summarizer.fetch_article_text(link)
+            summary = self.summarizer.summarize_text(article_text)
+            summaries.append(f"{title}: {summary}")
+
+        blog_post = self.generate_blog_post("\n\n".join(summaries))
+        self.summary_text.delete(1.0, tk.END)
+        self.summary_text.insert(tk.END, blog_post)
+
+    def generate_blog_post(self, summaries_text):
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Create an insightful blog post using the following summaries of recent news articles:\n\n{summaries_text}\n\nBlog post:",
+            max_tokens=3500,
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
+        return response.choices[0].text.strip()
+
+    def create_social_media_post(self):
+        selected_indices = self.articles_listbox.curselection()
+        summaries = []
+
+        if not hasattr(self, "filtered_articles"):
+            return
+
+        for index in selected_indices:
+            selected_article = self.filtered_articles[index]
+            link = "https://www.theregister.com" + selected_article.find("a")["href"]
+            title, article_text = self.summarizer.fetch_article_text(link)
+            summary = self.summarizer.summarize_text(article_text)
+            summaries.append(f"{title}: {summary}")
+
+        social_media_post = self.generate_social_media_post("\n\n".join(summaries))
+        self.summary_text.delete(1.0, tk.END)
+        self.summary_text.insert(tk.END, social_media_post)
+
+    def generate_social_media_post(self, summaries_text):
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Create an attractive and concise social media post using the following summaries of recent news articles:\n\n{summaries_text}\n\nSocial media post:",
+            max_tokens=280,  # Limit to 280 characters like a tweet.
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
+        return response.choices[0].text.strip()
 
     def run(self):
         self.root.mainloop()
