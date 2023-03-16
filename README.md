@@ -16,8 +16,18 @@ There is no GUI for the installation, so you'll have to use the command line/ter
 4. Run the GUI: `news-summarizer`
 
 # Example
+Generate summaries:
 
-![image](https://user-images.githubusercontent.com/22526586/225286616-9586b3d6-3f74-46c1-a4d6-00d3ba341d3f.png)
+![image](https://user-images.githubusercontent.com/22526586/225705604-2a642803-916f-4552-8e23-4c88a530ab83.png)
+
+Generate a blog from summaries:
+
+![image](https://user-images.githubusercontent.com/22526586/225705782-10c51c3d-2037-4a43-8d7a-49a9866a9801.png)
+
+Generate social media post from blog:
+
+![image](https://user-images.githubusercontent.com/22526586/225705899-c799cc16-50d8-4430-b441-af60b68aef0a.png)
+
 
 # Roadmap
 Working on a simply way to run a .exe file to make this simple for non-technical people on Windows. 
